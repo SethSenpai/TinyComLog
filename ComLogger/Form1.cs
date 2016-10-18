@@ -30,7 +30,7 @@ namespace ComLogger
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            //addConsoleText("Set COM port to: " + textBox1.Text);
+
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -110,7 +110,6 @@ namespace ComLogger
         private delegate void LineReceivedEvent(string line);
         private void LineReceived(string line)
         {
-            //What to do with the received line here
             addConsoleText(line);
             if (checkBox2.Checked == true)
             {

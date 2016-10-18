@@ -197,5 +197,18 @@ namespace ComLogger
         {
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string[] ports = SerialPort.GetPortNames();
+            string portText = "";
+            for(int i =0; i < ports.Length; i++)
+            {
+                portText = portText + " " + ports[i] + ",";
+            }
+
+            addConsoleText("Com ports detected: " + portText);
+            textBox1.Text = ports[0];
+        }
     }
 }

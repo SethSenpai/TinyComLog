@@ -40,6 +40,7 @@ namespace ComLogger
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //handle folder selection and output it to the in program console
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             DialogResult result = fbd.ShowDialog();
@@ -51,10 +52,13 @@ namespace ComLogger
                 addConsoleText("Set log folder to: " + dir);
                 
             }
+            //set the filepath used to reflect the changes made.
+            //this function will be called multiple times since it allows on the fly changes to the logging that is being done without interupting measurements
             setFilePath();
 
         }
 
+        //function for easy access to the in program console
         public void addConsoleText(string msg)
         {
             textBox2.AppendText(msg + "\r\n");
@@ -62,6 +66,7 @@ namespace ComLogger
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //check if we are already connected to a device if not open a new connection
             if (connected == false)
             {
                 dataStream = new SerialPort(textBox1.Text, int.Parse(textBox3.Text));
@@ -69,9 +74,11 @@ namespace ComLogger
                 dataStream.DtrEnable = true;
                 setFilePath();
 
+                //try to open a new connection if not possible print an error
                 try
                 {
                     dataStream.Open();
+                    //if we could make a connection add an event to datastream
                     dataStream.DataReceived += dataStream_DataReceived;
                     addConsoleText("connection opened");
                     button2.Text = "Stop Log";
@@ -83,8 +90,11 @@ namespace ComLogger
                     addConsoleText("connection failed");
                 }
             }
+
+            //if we are connected already we are going to close the connection and stop logging
             else
             {
+                //try to close the connection and reset booleans
                 try
                 {
                     dataStream.Close();
@@ -101,6 +111,7 @@ namespace ComLogger
             }
         }
 
+        //if we get any data coming in invoke the lineRecieved function
         private void dataStream_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             string line = dataStream.ReadLine();
@@ -110,9 +121,11 @@ namespace ComLogger
         private delegate void LineReceivedEvent(string line);
         private void LineReceived(string line)
         {
+            //display the value in the console and check if we should log it
             addConsoleText(line);
             if (checkBox2.Checked == true)
             {
+                //check if we have made a new file otherwise write to the file
                 if (fileMade == false)
                 {
                     try
@@ -166,6 +179,7 @@ namespace ComLogger
 
         }
 
+        //function that sets the path variable to reflect the current settings
         public void setFilePath()
         {
             DateTime formatedDate = DateTime.Now;
@@ -197,6 +211,7 @@ namespace ComLogger
 
         }
 
+        //detect com ports and print them in the console
         private void button3_Click(object sender, EventArgs e)
         {
             string[] ports = SerialPort.GetPortNames();

@@ -224,5 +224,10 @@ namespace ComLogger
             addConsoleText("Com ports detected: " + portText);
             textBox1.Text = ports[0];
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = "";
+        }
     }
 }
